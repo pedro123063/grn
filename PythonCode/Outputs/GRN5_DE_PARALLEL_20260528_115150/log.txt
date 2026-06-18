@@ -1,0 +1,3 @@
+2026-05-28 11:51:50,663 | INFO | Starting execution - Parallel
+2026-05-28 11:52:07,209 | INFO | Results saved to ../../Outputs/GRN5_DE_PARALLEL_20260528_115150\results.csv
+2026-05-28 11:52:07,211 | INFO | Execution finished in 16.55 seconds.

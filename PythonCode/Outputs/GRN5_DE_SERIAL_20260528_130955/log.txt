@@ -1,0 +1,23 @@
+2026-05-28 13:09:55,095 | INFO | Starting execution - Serial
+2026-05-28 13:09:55,095 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-05-28 13:09:55,095 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-05-28 13:32:18,079 | INFO | Execution finished for solver: ODEINT, seed: 0, error: MSE in 1342.98 seconds.
+2026-05-28 13:32:18,083 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260528_130955\results.csv
+2026-05-28 13:32:18,083 | INFO | Running with seed=1, solver=ODEINT, error=MSE
+2026-05-28 13:32:18,083 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=1
+2026-05-28 13:55:41,210 | INFO | Execution finished for solver: ODEINT, seed: 1, error: MSE in 1403.12 seconds.
+2026-05-28 13:55:41,213 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260528_130955\results.csv
+2026-05-28 13:55:41,213 | INFO | Running with seed=2, solver=ODEINT, error=MSE
+2026-05-28 13:55:41,213 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=2
+2026-05-28 14:34:20,790 | INFO | Execution finished for solver: ODEINT, seed: 2, error: MSE in 2319.57 seconds.
+2026-05-28 14:34:20,792 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260528_130955\results.csv
+2026-05-28 14:34:20,792 | INFO | Running with seed=3, solver=ODEINT, error=MSE
+2026-05-28 14:34:20,792 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=3
+2026-05-28 14:58:08,057 | INFO | Execution finished for solver: ODEINT, seed: 3, error: MSE in 1427.26 seconds.
+2026-05-28 14:58:08,059 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260528_130955\results.csv
+2026-05-28 14:58:08,059 | INFO | Running with seed=4, solver=ODEINT, error=MSE
+2026-05-28 14:58:08,059 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=4
+2026-05-28 15:21:48,781 | INFO | Execution finished for solver: ODEINT, seed: 4, error: MSE in 1420.71 seconds.
+2026-05-28 15:21:48,783 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260528_130955\results.csv
+2026-05-28 15:21:48,785 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260528_130955\results.csv
+2026-05-28 15:21:48,785 | INFO | Execution finished in 7913.69 seconds.
