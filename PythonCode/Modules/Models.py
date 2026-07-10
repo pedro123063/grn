@@ -67,7 +67,7 @@ class Model:
         self.original = self.original_train
         self.initial_conditions = self.original_train[:, 0]
         self.t_span = (self.t_train[0], self.t_train[-1])
-
+        #continuar documentação daqui
         if self.train_percentage < 1.0:
             self.t_test  = t[self.n_train:]
             self.original_test  = y[:, self.n_train:] if self.n_train < n else None
