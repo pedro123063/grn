@@ -209,7 +209,9 @@ class DE(Method):
             recombination=0.75,
             seed=seed,
             polish=True,
-            disp=True
+            disp=True,
+            vectorized=True
+
         )
         
         return Individual.list_to_ind(result.x, self.model)
