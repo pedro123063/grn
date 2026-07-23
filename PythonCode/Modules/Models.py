@@ -7,6 +7,7 @@ from scipy.integrate import solve_ivp
 import math
 import time
 import pandas as pd
+import Encode as en
 
 # Importação de módulos personalizados
 from Modules.Helpers import Helper
@@ -164,6 +165,7 @@ class ModelWrapper:
                 'tau': None,
             }
         }
+  
         
         bounds = {
             'tau': (0.1, 5.0),
