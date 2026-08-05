@@ -195,6 +195,58 @@ class DE(Method):
     def execute(self, logging, solver, error, seed, gens=5000, verbose=False):
         
         def objective_function(params):
+            # ind = Individual.list_to_ind(params, self.model)
+            # ind.calculate_fitness(solver=solver,error=error)
+            # return ind.fitness
+            _,S = params.shape
+            fitness=np.zeros(S)
+            for i in range(S):
+                ind = Individual.list_to_ind(params[:,i], self.model)
+                ind.calculate_fitness(solver=solver,error=error)
+                fitness[i]=ind.fitness
+            return fitness
+    
+        result = differential_evolution(
+            objective_function,
+            self.model.bounds_list(),
+            strategy='best1bin',
+            maxiter=gens,
+            popsize=15,
+            mutation=0.8,
+            recombination=0.75,
+            seed=seed,
+            polish=True,
+            disp=True
+            ,vectorized=True
+            #,workers=-1
+
+        )
+        
+        return Individual.list_to_ind(result.x, self.model)
+
+class DE_vectorized(Method):
+    def __init__(
+        self, 
+        model, 
+        strategy='best1bin',
+        popsize=15,
+        mutation=0.8,
+        recombination=0.75,
+        polish=True,
+        disp=True
+    ):
+        super().__init__()
+        self.model = model
+        self.strategy = strategy 
+        self.popsize = popsize 
+        self.mutation = mutation 
+        self.recombination = recombination 
+        self.polish = polish 
+        self.disp = disp 
+
+    def execute(self, logging, solver, error, seed, gens=5000, verbose=False):
+        
+        def objective_function(params):
             ind = Individual.list_to_ind(params, self.model)
             ind.calculate_fitness(solver=solver,error=error)
             return ind.fitness
@@ -209,12 +261,14 @@ class DE(Method):
             recombination=0.75,
             seed=seed,
             polish=True,
-            disp=True,
-            vectorized=True
+            disp=True
+            ,vectorized=True
+            #,workers=10
 
         )
         
         return Individual.list_to_ind(result.x, self.model)
+
     
 # Método DE Adaptativo
 class SaDE(Method):

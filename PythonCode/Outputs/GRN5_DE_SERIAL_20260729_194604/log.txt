@@ -1,0 +1,126 @@
+2026-07-29 19:46:04,523 | INFO | Starting execution - Serial
+2026-07-29 19:46:04,523 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-07-29 19:46:04,523 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-07-29 19:46:04,525 | ERROR | Unexpected error: The map-like callable must be of the form f(func, iterable), returning a sequence of numbers the same length as 'iterable'
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1396, in _calculate_population_energies
+    self._mapwrapper(self.func, parameters_pop[0:S])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 692, in __call__
+    return self._mapfunc(func, iterable)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 853, in maplike_for_vectorized_func
+    return np.atleast_1d(func(x.T))
+                         ~~~~^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 588, in __call__
+    return self.f(x, *self.args)
+           ~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 198, in objective_function
+    ind = Individual.list_to_ind(params, self.model)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 230, in list_to_ind
+    label_dict['tau'] = CMACoefficient(list_ind[i], model.bounds['tau'])
+                        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 28, in __init__
+    self.val = self.limit_val(val)  # Ajusta o valor aos limites
+               ~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 32, in limit_val
+    return max(self.bounds[0], min(val, self.bounds[1]))
+                               ~~~^^^^^^^^^^^^^^^^^^^^^
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 39, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 202, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<10 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1402, in _calculate_population_energies
+    raise RuntimeError(
+    ...<2 lines>...
+    ) from e
+RuntimeError: The map-like callable must be of the form f(func, iterable), returning a sequence of numbers the same length as 'iterable'
+2026-07-29 19:46:04,529 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: cannot access local variable 'best_ind' where it is not associated with a value, traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1396, in _calculate_population_energies
+    self._mapwrapper(self.func, parameters_pop[0:S])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 692, in __call__
+    return self._mapfunc(func, iterable)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 853, in maplike_for_vectorized_func
+    return np.atleast_1d(func(x.T))
+                         ~~~~^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 588, in __call__
+    return self.f(x, *self.args)
+           ~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 198, in objective_function
+    ind = Individual.list_to_ind(params, self.model)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 230, in list_to_ind
+    label_dict['tau'] = CMACoefficient(list_ind[i], model.bounds['tau'])
+                        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 28, in __init__
+    self.val = self.limit_val(val)  # Ajusta o valor aos limites
+               ~~~~~~~~~~~~~~^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 32, in limit_val
+    return max(self.bounds[0], min(val, self.bounds[1]))
+                               ~~~^^^^^^^^^^^^^^^^^^^^^
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    raise e
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 39, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 202, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<10 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1402, in _calculate_population_energies
+    raise RuntimeError(
+    ...<2 lines>...
+    ) from e
+RuntimeError: The map-like callable must be of the form f(func, iterable), returning a sequence of numbers the same length as 'iterable'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<5 lines>...
+        verbose=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 50, in run
+    if best_ind:
+       ^^^^^^^^
+UnboundLocalError: cannot access local variable 'best_ind' where it is not associated with a value
+
+2026-07-29 19:46:04,531 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260729_194604\results.csv
+2026-07-29 19:46:04,533 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260729_194604\results.csv
+2026-07-29 19:46:04,533 | INFO | Execution finished in 0.01 seconds.

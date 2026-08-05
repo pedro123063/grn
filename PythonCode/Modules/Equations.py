@@ -4,7 +4,7 @@ class Equation:
     def __init__(self, coefficients, labels):
         self.coefficients = coefficients
         self.labels = labels
-        self.label_to_idx = {label:i for i, label in enumerate(labels)}
+        self.label_to_idx = {label:i for i, label in enumerate(labels)} # talvez compense escrever como lista/vetor com labels numéricos
     
    
     def main_eq(self, val, nval, kval, minusone):

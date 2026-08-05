@@ -1,0 +1,70 @@
+2026-07-30 17:03:19,908 | INFO | Starting execution - Serial
+2026-07-30 17:03:19,908 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-07-30 17:03:19,908 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-07-30 17:03:21,272 | ERROR | Unexpected error: The vectorized function must return an array of shape (S,) when given an array of shape (len(x), S)
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 39, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 206, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<11 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1409, in _calculate_population_energies
+    raise RuntimeError("The vectorized function must return an"
+                       " array of shape (S,) when given an array"
+                       " of shape (len(x), S)")
+RuntimeError: The vectorized function must return an array of shape (S,) when given an array of shape (len(x), S)
+2026-07-30 17:03:21,275 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: cannot access local variable 'best_ind' where it is not associated with a value, traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    raise e
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 39, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 206, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<11 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1409, in _calculate_population_energies
+    raise RuntimeError("The vectorized function must return an"
+                       " array of shape (S,) when given an array"
+                       " of shape (len(x), S)")
+RuntimeError: The vectorized function must return an array of shape (S,) when given an array of shape (len(x), S)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<5 lines>...
+        verbose=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 50, in run
+    if best_ind:
+       ^^^^^^^^
+UnboundLocalError: cannot access local variable 'best_ind' where it is not associated with a value
+
+2026-07-30 17:03:21,277 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260730_170319\results.csv
+2026-07-30 17:03:21,279 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260730_170319\results.csv
+2026-07-30 17:03:21,279 | INFO | Execution finished in 1.37 seconds.

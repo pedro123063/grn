@@ -80,6 +80,7 @@ class Individual:
                 t_eval=t_eval,
                 args=(self, self.equation)#,
                 #min_step=0.001
+                ,workers=-1
             ).y
     
     def ind_to_list(self):

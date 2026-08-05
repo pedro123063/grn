@@ -7,13 +7,13 @@ from scipy.integrate import solve_ivp
 import math
 import time
 import pandas as pd
-import Encode as en
+
 
 # Importação de módulos personalizados
 from Modules.Helpers import Helper
 from Modules.Solvers import Solvers
 from Modules.Equations import Equation
-
+from Modules.Encode import *
 from Modules.TrainTest import TemporalTrainTest
 
 class Model:
@@ -141,24 +141,24 @@ class ModelWrapper:
         labels = ['A', 'B', 'C', 'D', 'E']
         datapath = '../../Data/GRN5_DATA.txt'
         
-        coeffs = { #dict of dicts of dicts (3 dicts nested)
-            'A': {
+        coeffs = {  #base
+            'A': {  #target 
                 'E': {'n': None, 'k': None, '-': True},
                 'tau': None
             },
-            'B': {
+            'B': {  #target
                 'A': {'n': None, 'k': None, '-': False},
                 'tau': None
             },
-            'C': {
+            'C': {  #target
                 'B': {'n': None, 'k': None, '-': False},
                 'tau': None,
             },
-            'D': {
+            'D': {  #target
                 'C': {'n': None, 'k': None, '-': False},
                 'tau': None,
             },
-            'E': {
+            'E': {  #target
                 'D': {'n': None, 'k': None, '-': False},
                 'B': {'n': None, 'k': None, '-': False},
                 'E': {'n': None, 'k': None, '-': False},
@@ -183,7 +183,7 @@ class ModelWrapper:
             #before the for : normalizes each value using the maximum value of their correspondent label
             #zip : creates tuples (y[index],labels[index])
             
-            dA = equation.full_eq(vals, 'A', 'E') # differential of A ? differential equation of A ?
+            dA = equation.full_eq(vals, 'A', 'E') # calculates the value of dA using vals(matrix) , 'A' and 'E'
             dB = equation.full_eq(vals, 'B', 'A')
             dC = equation.full_eq(vals, 'C', 'B')
             dD = equation.full_eq(vals, 'D', 'C')

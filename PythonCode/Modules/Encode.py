@@ -17,8 +17,7 @@ def searchSymbolSet(dictionary,symbols=None): #primeira invocação deve ser sem
 
 
     return symbolSet
-        
-        
+           
 
 def createSymbolsArray(symbolSet):
     symbolsArraySorted = np.array(sorted(symbolSet))
@@ -54,4 +53,4 @@ def encodeDict(symbolsArray,encodedSymbolsArray,dictionary):
 
     return encodedDict
 
-def transformEncodedDictToMatrix(encodedDict):
+
