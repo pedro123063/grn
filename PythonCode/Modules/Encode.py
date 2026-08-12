@@ -1,56 +1,71 @@
 import numpy as np
 
-def searchSymbolSet(dictionary,symbols=None): #primeira invocação deve ser sem passar nada pro symbols
-    symbolSet = None
-    if isinstance(symbols,list):
-        symbols = set(symbols)
-    elif isinstance(symbols,set):
-        symbols=symbols
-    elif symbols is None:
-        symbols=set()
+def symbolDictFromLabels(labels): #retorna um dicionário com tanto o par (cod,simbolo) quanto (simbolo,cod) 
+    labels=sorted(labels)
+    encodingDict={}
+    for label,i in labels.enumerate():
+        encodingDict[i]=label
+        encodingDict[label]=i
+    number=len(labels)
 
-    for key,value in dictionary.items():
-        symbolSet.add(key)
+    aux=['-','tau','n','k']
 
+    aux=sorted(aux)
+    for symb,i in aux.enumerate():
+        encodingDict[aux+i]=symb
+        encodingDict[symb]=aux+i
+
+    return encodingDict
+
+
+def encodeDict(encodingDict,toBeEncoded): #substitui todas as chaves textuais por chaves do encoding
+    encoded={}
+    for key,value in toBeEncoded:
         if isinstance(value,dict):
-            searchSymbolSet(value,symbolSet)
+            aux=encodeDict(encodingDict,value)
+            encoded[encodingDict[key]]=aux
+        else:
+            encoded[encodeDict[key]]=value
 
+    return encoded
 
-    return symbolSet
-           
+def encodeBounds(encodingDict,toBeEncodedBoundsDict): #substitui todas as chaves textuais por chaves do encoding
+    encoded={}
+    for key,value in toBeEncodedBoundsDict:
+        encoded[encodingDict[key]]=value
+    return encoded
 
-def createSymbolsArray(symbolSet):
-    symbolsArraySorted = np.array(sorted(symbolSet))
+def findStructure(dictCoef):
+    struct = {}
+    struct[1]=len(dictCoef) #level1
+    level2={}
+    level3=-1
 
-    return symbolsArraySorted
-    
+    for key,value in dictCoef:
+        level2[key]=value.len()-1
+    for key,value in dictCoef:
+        for key2,value2 in value:
+            level3=len(value2)
+            break
+        break
 
-def encodeSymbolsArray(symbolsArraySorted): # verificar se isso garante estabilidade e determinismo no acesso
-    sz=len(symbolsArraySorted)
-    encodedSymbolsArray = np.zeros(sz,dtype=int)
-    
-    for i in range(sz):
-        encodedSymbolsArray[i]=i
-    return encodedSymbolsArray
+    struct[3]=level3
+    struct[2]=level2
 
-def encodeDict(symbolsArray,encodedSymbolsArray,dictionary):
+    return struct
 
-    encodedDict = {}
-
-    for key,value in dictionary.items():
-        if key in symbolsArray:
-            position = np.searchsorted(symbolsArray,key)
-            newKey = encodedSymbolsArray[position]
-            newValue=None
-
-            if isinstance(value,dict):
-                newValue=encodeDict(symbolsArray,encodedSymbolsArray,value)
-
+def getPares(encondingDict,dictCoef):
+    toRet={}
+    for key1,value1 in dictCoef:
+        aux=[]
+        for key2,value2 in value1:
+            if encodeDict[key2]=='tau':
+                continue
             else:
-                newValue=encodedSymbolsArray[np.searchsorted(symbolsArray,value)]
-                
-            encodedDict[newKey]=newValue
+                aux.append(key2)
+        toRet[key1]=aux
 
-    return encodedDict
-
+    return toRet
+    
+    
 
