@@ -35,9 +35,9 @@ def encodeBounds(encodingDict,toBeEncodedBoundsDict): #substitui todas as chaves
         encoded[encodingDict[key]]=value
     return encoded
 
-def generateCoefVet(encodingDict,dictCoeffs):
+def generateCoefVet(encodingDict,encodedDict):
     aux=0
-    for key1,value1 in dictCoeffs.items():
+    for key1,value1 in encodedDict.items():
         for key2,value2 in value1.items():
             if key2 !=encodingDict['tau']:
                 aux+=3
@@ -64,3 +64,14 @@ def populateCoefVet(coefVet,encodedBounds,encodingDict):
     coefVet[0::3]=np.double(encodedBounds[encodingDict['n']][0])
     coefVet[1::3]=np.double(encodedBounds[encodingDict['k']][0])
     coefVet[2::3]=np.double(1.0)
+
+def encode(labels,coeff,bounds):
+    encodingDict = symbolDictFromLabels(labels)
+    encodedDict=encodeDict(encodingDict,coeff)
+    encodedBounds=encodeBounds(encodingDict,bounds)
+    coeffVet=generateCoefVet(encodingDict,encodedDict)
+    tauVet=generateTauVet(labels)
+    idxMatrix=generateIdxMatrix(labels)
+    populateMIdx(idxMatrix,encodingDict,encodedDict)
+    populateTauVet(tauVet,encodedBounds)
+    populateCoefVet(coeffVet,encodedBounds,encodingDict)
