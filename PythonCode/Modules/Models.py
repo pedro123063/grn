@@ -392,3 +392,4 @@ class ModelWrapper:
             return [dA, dB, dC, dD, dE]
 
         return Model(coeffs=coeffs, bounds=bounds, system=system, labels=labels, datapath=datapath, name='ECOLI', train_percentage=train_percentage)
+
