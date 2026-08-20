@@ -1,11 +1,13 @@
 import numpy as np
 
-def symbolDictFromLabels(labels): #retorna um dicionário com tanto o par (cod,simbolo) quanto (simbolo,cod) 
+def encodeLabels_and_encodingDict(labels): #retorna um dicionário com tanto o par (cod,simbolo) quanto (simbolo,cod) 
     labels=sorted(labels)
     encodingDict={}
+    encodedLabels=np.array(len(labels),dtype=np.int8)
     for i,label in enumerate(labels):
         encodingDict[i]=label
         encodingDict[label]=i
+        encodedLabels[i]=i
     number=len(labels)
 
     aux=('n','k','-','tau')
@@ -15,8 +17,7 @@ def symbolDictFromLabels(labels): #retorna um dicionário com tanto o par (cod,s
         encodingDict[vAux+i]=symb
         encodingDict[symb]=vAux+i
 
-    return encodingDict
-
+    return encodedLabels,encodingDict
 
 def encodeDict(encodingDict,toBeEncoded): #substitui todas as chaves textuais por chaves do encoding
     encoded={}
@@ -47,7 +48,7 @@ def generateTauVet(labels):
     return np.zeros(len(labels),dtype=np.double)
 
 def generateIdxMatrix(labels):
-    matrix=np.zeros((len(labels),len(labels)),dtype=np.int16)
+    matrix=np.full((len(labels),len(labels)),-1,dtype=np.int16)
     return matrix
 
 def populateMIdx(matrix,encodingDict,encodedDict):
@@ -65,13 +66,15 @@ def populateCoefVet(coefVet,encodedBounds,encodingDict):
     coefVet[1::3]=np.double(encodedBounds[encodingDict['k']][0])
     coefVet[2::3]=np.double(1.0)
 
-def encode(labels,coeff,bounds):
-    encodingDict = symbolDictFromLabels(labels)
+def encode(labels,coeff,bounds)->dict :
+    encodedLabels,encodingDict = encodeLabels_and_encodingDict(labels)
     encodedDict=encodeDict(encodingDict,coeff)
     encodedBounds=encodeBounds(encodingDict,bounds)
     coeffVet=generateCoefVet(encodingDict,encodedDict)
     tauVet=generateTauVet(labels)
     idxMatrix=generateIdxMatrix(labels)
     populateMIdx(idxMatrix,encodingDict,encodedDict)
-    populateTauVet(tauVet,encodedBounds)
+    populateTauVet(tauVet,encodedBounds,encodingDict)
     populateCoefVet(coeffVet,encodedBounds,encodingDict)
+    
+    return (encodedLabels,encodingDict,encodedBounds,idxMatrix,coeffVet,tauVet)
