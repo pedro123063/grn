@@ -1,0 +1,22 @@
+2026-08-26 16:13:09,965 | INFO | Starting execution - Serial
+2026-08-26 16:13:09,965 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-08-26 16:13:09,965 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-08-26 16:13:10,037 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: 'Model' object has no attribute 'MatrixInd', traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<5 lines>...
+        verbose=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 61, in run
+    errors_result = best_ind.calc_all_fitness(test=False, solver=solver)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 128, in calc_all_fitness
+    y = self.solve_ivp(test=test, solver=solver)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 68, in solve_ivp
+    args=(self.model.max_data,self.model.MatrixInd,self.model.encodedLabels),
+                              ^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Model' object has no attribute 'MatrixInd'. Did you mean: 'MatixInd'?
+
+2026-08-26 16:13:10,040 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260826_161309\results.csv
+2026-08-26 16:13:10,042 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260826_161309\results.csv
+2026-08-26 16:13:10,042 | INFO | Execution finished in 0.08 seconds.

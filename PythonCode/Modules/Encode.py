@@ -3,11 +3,11 @@ import numpy as np
 def encodeLabels_and_encodingDict(labels): #retorna um dicionário com tanto o par (cod,simbolo) quanto (simbolo,cod) 
     labels=sorted(labels)
     encodingDict={}
-    encodedLabels=np.array(len(labels),dtype=np.int8)
+    encodedLabels=np.ndarray((len(labels)),dtype=np.int8)
     for i,label in enumerate(labels):
         encodingDict[i]=label
         encodingDict[label]=i
-        encodedLabels[i]=i
+        encodedLabels[i]=np.int8(i)
     number=len(labels)
 
     aux=('n','k','-','tau')

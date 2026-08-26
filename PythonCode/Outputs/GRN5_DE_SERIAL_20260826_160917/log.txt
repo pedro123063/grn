@@ -1,0 +1,22 @@
+2026-08-26 16:09:17,158 | INFO | Starting execution - Serial
+2026-08-26 16:09:17,159 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-08-26 16:09:17,159 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-08-26 16:09:17,218 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: 'Individual' object has no attribute 'maxData', traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<5 lines>...
+        verbose=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 61, in run
+    errors_result = best_ind.calc_all_fitness(test=False, solver=solver)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 128, in calc_all_fitness
+    y = self.solve_ivp(test=test, solver=solver)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\EvolutionModules.py", line 68, in solve_ivp
+    args=(self, self.maxData),
+                ^^^^^^^^^^^^
+AttributeError: 'Individual' object has no attribute 'maxData'
+
+2026-08-26 16:09:17,221 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260826_160917\results.csv
+2026-08-26 16:09:17,222 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260826_160917\results.csv
+2026-08-26 16:09:17,222 | INFO | Execution finished in 0.06 seconds.

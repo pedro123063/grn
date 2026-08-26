@@ -16,10 +16,11 @@ import Modules.MatrixIndividual as mi
 from deap import base, creator, tools, benchmarks
 import deap.cma as cma
 import random
+import Modules.Solvers as sol
 
 # Importação de módulos personalizados
 from Modules.Helpers import Helper
-from Modules.Solvers import Solvers
+
 from Modules.Equations import *
 from Modules.EvolutionModules import *
 

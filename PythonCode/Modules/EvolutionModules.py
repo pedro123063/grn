@@ -65,7 +65,7 @@ class Individual:
                 # lambda y, t: self.model.system(t, y, self, self.equation),  # Wrap system for odeint (t first)
                 initial_conditions,
                 t_eval,
-                args=(self, self.equation),
+                args=(self.model.max_data,self.model.MatrixInd,self.model.encodedLabels),
                 tfirst=True,  # Important: tells odeint the function is (t, y) instead of (y, t)
                 hmin=0.001
             )
@@ -78,7 +78,7 @@ class Individual:
                 initial_conditions,
                 method=solver,
                 t_eval=t_eval,
-                args=(self, self.equation)#,
+                args=(self.model.max_data,self.model.MatrixInd,self.model.encodedLabels)#,
                 #min_step=0.001
                 
             ).y
@@ -113,9 +113,9 @@ class Individual:
             y = self.solve_ivp(test=test, solver=solver)
             self.fitness = Helper.calculate_error(data, y, error)
             self.fitness = min(self.fitness, 1e6)
-        except:
+        except Exception as e:
             # Trata exceções relacionadas ao solver
-            print("Overflow")
+            print(f"Error msg on EvolutionModules/Individual/calculate_fitness:{e}")
             self.fitness = 1e6
             
     def calc_all_fitness(self, test=False, solver='RK45'):

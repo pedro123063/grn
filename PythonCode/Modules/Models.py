@@ -9,11 +9,12 @@ import time
 import pandas as pd
 import Modules.Equations as Eq
 import Modules.Encode as Enc
-
+import Modules.MatrixIndividual as ma
+import Modules.Solvers as sol
 
 # Importação de módulos personalizados
 from Modules.Helpers import Helper
-from Modules.Solvers import Solvers
+
 
 from Modules.Encode import *
 from Modules.TrainTest import TemporalTrainTest
@@ -41,6 +42,8 @@ class Model:
         self.coeffVet=coeffVet
         self.tauVet=tauVet
         self.encodedLabels=encodedLabels
+        self.nIdx=len(encodedLabels)
+        self.MatrixInd=ma.MatrixIndividual(self.idxMatrix,self.coeffVet,self.tauVet,self.nIdx)
     # def resolve_data(self):
     #     self.df, self.max_data = Helper.load_data(filename=self.datapath, labels=self.labels)
     #     self.initial_conditions = np.array([self.df[label].iloc[0] for label in self.labels])
@@ -154,7 +157,7 @@ class ModelWrapper:
         
         vals = np.empty_like(y)
         for i in range(len(y)): #list of y's after being normalized by the maxValue of their respective label 
-            vals[i]=Solvers.norm_hardcoded(y[i], maxData[i])
+            vals[i]=sol.norm_hardcoded(y[i], maxData[i])
         #(if y[0] is a value for a label[0]==A , it will be normalized by max_val of all values associated with A)
         #before the for : normalizes each value using the maximum value of their correspondent label
         #zip : creates tuples (y[index],labels[index])
@@ -275,7 +278,7 @@ class ModelWrapper:
 
         # equação é argumento para aumentar eficiencia da função    
         def system(t, y, ind, equation):
-            vals = [Solvers.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
+            vals = [sol.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
             
             dA = equation.full_eq(vals, 'A', 'J')
             dB = equation.full_eq(vals, 'B', 'E')
@@ -344,7 +347,7 @@ class ModelWrapper:
 
         # equação é argumento para aumentar eficiencia da função    
         def system(t, y, ind, equation):
-            vals = [Solvers.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
+            vals = [sol.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
             
             dA = equation.complex_eqs(vals, 'A', [['-A', '-D'], ['+B', '-D'], ['+A', '-B', '+D']])
             dB = equation.complex_eqs(vals, 'B', [['-C'], ['+D']])
@@ -401,7 +404,7 @@ class ModelWrapper:
 
         # equação é argumento para aumentar eficiencia da função    
         def system(t, y, ind, equation):
-            vals = [Solvers.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
+            vals = [sol.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
             
             dA = equation.complex_eqs(vals, 'A', [['-A', '-D', '-E'], ['-A', '-C', '+E'], ['+A', '+D', '-E']])
             dB = equation.complex_eqs(vals, 'B', [['-A', '-D', '-E'], ['-A', '-C', '+E'], ['+A', '+D', '-E']])
