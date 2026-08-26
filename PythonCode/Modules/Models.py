@@ -17,6 +17,7 @@ from Modules.Solvers import Solvers
 
 from Modules.Encode import *
 from Modules.TrainTest import TemporalTrainTest
+from numba import njit
 
 class Model:
     def __init__(self, coeffs, bounds, system, labels, datapath,\
@@ -145,7 +146,9 @@ class Model:
 class ModelWrapper:
             #simply wraps the model based on our desire of use GRN(5 or 10), ABCD or ECOLI , fowarding the infos the  the right places. Read Model for more deatil.
             #Returns a Model
-    @staticmethod 
+    @staticmethod
+    @njit 
+
     def GRN5_system(t, y,maxData,matrixInd,encodedLabels):
         #DIFFERENTIAL EQUATIONS SYSTEM ?
         

@@ -10,7 +10,7 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 from Modules.Plotters import Plotter
 from Modules.Helpers import Helper
-from Modules.Equations import Equation
+from Modules.Equations import *
 
 # Representa um coeficiente com valor e limites
 class Coefficient:

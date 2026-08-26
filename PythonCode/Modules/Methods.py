@@ -11,6 +11,7 @@ from scipy.integrate import solve_ivp
 import math
 import time
 import pandas as pd
+import Modules.MatrixIndividual as mi
 
 from deap import base, creator, tools, benchmarks
 import deap.cma as cma
@@ -19,8 +20,9 @@ import random
 # Importação de módulos personalizados
 from Modules.Helpers import Helper
 from Modules.Solvers import Solvers
-from Modules.Equations import Equation
+from Modules.Equations import *
 from Modules.EvolutionModules import *
+
 
 from scipy.optimize import differential_evolution
 
@@ -216,8 +218,8 @@ class DE(Method):
             recombination=0.75,
             seed=seed,
             polish=True,
-            disp=True
-            ,vectorized=True
+            disp=True,
+            vectorized=True
             #,workers=-1
 
         )
