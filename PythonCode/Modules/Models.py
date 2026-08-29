@@ -42,8 +42,11 @@ class Model:
         self.coeffVet=coeffVet
         self.tauVet=tauVet
         self.encodedLabels=encodedLabels
-        self.nIdx=len(encodedLabels)
+        self.nIdx=len(encodedLabels)#escrever no readme que isso foi convencionado
         self.MatrixInd=ma.MatrixIndividual(self.idxMatrix,self.coeffVet,self.tauVet,self.nIdx)
+        self.numLabels=len(labels)
+        self.coefNum_div3=len(coeffVet)//3
+        self.bounds_matrix=self.bounds_matrix_create()
     # def resolve_data(self):
     #     self.df, self.max_data = Helper.load_data(filename=self.datapath, labels=self.labels)
     #     self.initial_conditions = np.array([self.df[label].iloc[0] for label in self.labels])
@@ -120,8 +123,21 @@ class Model:
             if isinstance(value, dict):
                 lines.append(self.summarize_coeffs(value, indent, level + 1))
         return '\n'.join(lines)
-    
-        
+
+
+    def bounds_matrix_create(self): # gera a matriz que será lida pelo differential_evolution.Estruturada de maneira a reduzir overhead na hora de enviar valores do diff_ev p montagem de individuo
+        l_aux=[]
+        for i in range(len(self.labels)):
+            l_aux.append(self.encodedBounds[self.encodingDict['tau']])
+        for i in range(self.coefNum_div3):
+            l_aux.append(self.encodedBounds[self.encodingDict['n']])
+            l_aux.append(self.encodedBounds[self.encodingDict['k']])
+        bounds_matrix=np.array(l_aux,dtype=np.float64)
+        '''
+        As primeiras len(labels) posicoes conterão bounds de tau. As outras , conterão bounds de n,k alternados. Deve ser tratado com slicing na obj_func
+        '''
+        return bounds_matrix
+          
     def bounds_list(self):
         bounds_list = []
         for key, label in self.coeffs.items():

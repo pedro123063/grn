@@ -42,10 +42,10 @@ def generateCoefVet(encodingDict,encodedDict):
         for key2,value2 in value1.items():
             if key2 !=encodingDict['tau']:
                 aux+=3
-    return np.zeros(aux,dtype=np.double)
+    return np.zeros(aux,dtype=np.float64)
 
 def generateTauVet(labels):
-    return np.zeros(len(labels),dtype=np.double)
+    return np.zeros(len(labels),dtype=np.float64)
 
 def generateIdxMatrix(labels):
     matrix=np.full((len(labels),len(labels)),-1,dtype=np.int16)
@@ -59,13 +59,13 @@ def populateMIdx(matrix,encodingDict,encodedDict):
                 matrix[key1,key2]=np.int16(aux)
                 aux+=3
 def populateTauVet(tauVet,encodedBounds,encodingDict):
-    tauVet[:]=np.double(encodedBounds[encodingDict['tau']][0])
+    tauVet[:]=[np.float64(encodedBounds[encodingDict['tau']][0])]
 
 def populateCoefVet(coefVet,encodedBounds,encodingDict):
-    coefVet[0::3]=np.double(encodedBounds[encodingDict['n']][0])
-    coefVet[1::3]=np.double(encodedBounds[encodingDict['k']][0])
-    coefVet[2::3]=np.double(1.0)
-
+    coefVet[0::3]=np.float64(encodedBounds[encodingDict['n']][0])
+    coefVet[1::3]=np.float64(encodedBounds[encodingDict['k']][0])
+    coefVet[2::3]=np.float64(1.0)
+    coefVet[2]=np.float64(-1.0)
 def encode(labels,coeff,bounds)->dict :
     encodedLabels,encodingDict = encodeLabels_and_encodingDict(labels)
     encodedDict=encodeDict(encodingDict,coeff)

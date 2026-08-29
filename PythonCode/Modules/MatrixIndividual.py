@@ -6,20 +6,20 @@ from numba import int8, int16, float64
 
 # TODO (Numba JIT):
 # 1. Adicionar o decorador @jitclass(spec) antes da definição da classe.
-# 2. Definir o dicionário 'spec' mapeando os tipos dos atributos (idxM, coef, tauVet, nIdx).
+# 2. Definir o dicionário 'spec' mapeando os tipos dos atributos (idxM, coeff, tauVet, nIdx).
 
-spec=[('idxM',int16[:,:]),('coef',float64[:]),('tauVet',float64[:]),('nIdx',int8),]
+spec=[('idxM',int16[:,:]),('coeff',float64[:]),('tauVet',float64[:]),('nIdx',int8),]
 @jitclass(spec)
 class MatrixIndividual:
     def __init__(self,
                 indexingMatrix,
-                coefVet ,
+                coeffVet ,
                 tauVet,
                 nIdx #obs: a ordem de coeffs será n,k,minus . Assim , minusIdx=kIdx+1=nIdx+2
                 ):
 
         self.idxM=indexingMatrix
-        self.coef=coefVet
+        self.coeff=coeffVet
         self.tauVet=tauVet
         self.nIdx=nIdx
         
@@ -31,13 +31,21 @@ class MatrixIndividual:
         targetIdx=key[1]
         varIdx=key[2]
 
-        return self.coef[ self.idxM[origIdx,targetIdx]+(varIdx-self.nIdx) ]
+        return self.coeff[ self.idxM[origIdx,targetIdx]+(varIdx-self.nIdx) ]
 
     def tau(self,idx):
         return self.tauVet[idx]
+    def replaceTau(self,alt_tau):
+        for i in range(len(self.tauVet)):
+            self.tauVet[i]=alt_tau[i]
     
     def replaceCoeffVet(self,newCoeffVet):
-        self.coef=newCoeffVet
-        
-        
+        aux_old=0
+        aux_new=0
+        threshold=len(self.coeff)
+        while aux_old<threshold:
+            self.coeff[aux_old]=newCoeffVet[aux_new]
+            self.coeff[aux_old+1]=newCoeffVet[aux_new+1]
+            aux_old+=3
+            aux_new+=2
     

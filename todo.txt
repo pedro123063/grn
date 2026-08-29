@@ -1,0 +1,10 @@
+1(analisar se é uma boa próxima abordagem):
+    mudar a forma como as equações dos modelos são calculadas.
+    mudar para algo hardcoded ao invés de com as camadas de abstração e chamadas de objetos que temos.
+    analise:
+        +precisamos dos valores dos coeficientes e valores artuais das variaveis.As multiplas camadas podem estar
+        gerando complexidade desnecessaria e overhead pro python e numba/jit.
+2(documentação):
+    +comentar meu código
+    +escrever readme.md
+    +explicitar repositorio fonte(lana) e depenndencias

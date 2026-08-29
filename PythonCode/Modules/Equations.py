@@ -4,9 +4,8 @@ from numba import njit
 
 @njit
 def main_eq(val, nval, kval, minusone):
-
-    result = (val**nval / (val**nval + kval**nval))
     
+    result = (val**nval / (val**nval + kval**nval))
     if minusone==-1.0:
         return  1 - result
     return result

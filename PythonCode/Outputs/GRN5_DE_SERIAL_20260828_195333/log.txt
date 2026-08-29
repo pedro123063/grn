@@ -1,0 +1,162 @@
+2026-08-28 19:53:33,764 | INFO | Starting execution - Serial
+2026-08-28 19:53:33,764 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-08-28 19:53:33,764 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-08-28 19:53:33,766 | ERROR | Unexpected error: Failed in nopython mode pipeline (step: nopython frontend)
+[1m[1m[1m[1m[1m- Resolution failure for literal arguments:
+[1mFailed in nopython mode pipeline (step: nopython frontend)
+[1m[1m[1mInvalid use of getiter with parameters (int64)
+[0m
+[0m[1mDuring: typing of intrinsic-call at c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\MatrixIndividual.py (39)[0m
+[1m
+File "..\..\Modules\MatrixIndividual.py", line 39:[0m
+[1m    def replaceTau(self,alt_tau):
+[1m        for i in len(self.tauVet):
+[0m        [1m^[0m[0m
+
+[0m[1mDuring: Pass nopython_type_inference[0m[0m
+[0m[1m- Resolution failure for non-literal arguments:
+[1mNone[0m
+[0m[0m
+[0m[1mDuring: resolving callee type: BoundFunction((<class 'numba.core.types.misc.ClassInstanceType'>, 'replaceTau') for instance.jitclass.MatrixIndividual#2b208d50830<idxM:array(int16, 2d, A),coeff:array(float64, 1d, A),tauVet:array(float64, 1d, A),nIdx:int8>)[0m
+[0m[1mDuring: typing of call at <string> (3)[0m
+[1m
+File "<string>", line 3:[0m
+[1m<source missing, REPL/exec in use?>[0m
+
+[0m[1mDuring: Pass nopython_type_inference[0m
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 134, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<11 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1395, in _calculate_population_energies
+    calc_energies = list(
+        self._mapwrapper(self.func, parameters_pop[0:S])
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 588, in __call__
+    return self.f(x, *self.args)
+           ~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 122, in objective_function
+    self.model.MatrixInd.replaceTau(params[:self.model.numLabels])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\numba\experimental\jitclass\boxing.py", line 61, in wrapper
+    return method(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\numba\core\dispatcher.py", line 422, in _compile_for_args
+    error_rewrite(e, 'typing')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\numba\core\dispatcher.py", line 363, in error_rewrite
+    raise e.with_traceback(None)
+numba.core.errors.TypingError: Failed in nopython mode pipeline (step: nopython frontend)
+[1m[1m[1m[1m[1m- Resolution failure for literal arguments:
+[1mFailed in nopython mode pipeline (step: nopython frontend)
+[1m[1m[1mInvalid use of getiter with parameters (int64)
+[0m
+[0m[1mDuring: typing of intrinsic-call at c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\MatrixIndividual.py (39)[0m
+[1m
+File "..\..\Modules\MatrixIndividual.py", line 39:[0m
+[1m    def replaceTau(self,alt_tau):
+[1m        for i in len(self.tauVet):
+[0m        [1m^[0m[0m
+
+[0m[1mDuring: Pass nopython_type_inference[0m[0m
+[0m[1m- Resolution failure for non-literal arguments:
+[1mNone[0m
+[0m[0m
+[0m[1mDuring: resolving callee type: BoundFunction((<class 'numba.core.types.misc.ClassInstanceType'>, 'replaceTau') for instance.jitclass.MatrixIndividual#2b208d50830<idxM:array(int16, 2d, A),coeff:array(float64, 1d, A),tauVet:array(float64, 1d, A),nIdx:int8>)[0m
+[0m[1mDuring: typing of call at <string> (3)[0m
+[1m
+File "<string>", line 3:[0m
+[1m<source missing, REPL/exec in use?>[0m
+
+[0m[1mDuring: Pass nopython_type_inference[0m
+2026-08-28 19:53:33,768 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: cannot access local variable 'best_ind' where it is not associated with a value, traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 47, in run
+    raise e
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 134, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<11 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1395, in _calculate_population_energies
+    calc_energies = list(
+        self._mapwrapper(self.func, parameters_pop[0:S])
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 588, in __call__
+    return self.f(x, *self.args)
+           ~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 122, in objective_function
+    self.model.MatrixInd.replaceTau(params[:self.model.numLabels])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\numba\experimental\jitclass\boxing.py", line 61, in wrapper
+    return method(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\numba\core\dispatcher.py", line 422, in _compile_for_args
+    error_rewrite(e, 'typing')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\numba\core\dispatcher.py", line 363, in error_rewrite
+    raise e.with_traceback(None)
+numba.core.errors.TypingError: Failed in nopython mode pipeline (step: nopython frontend)
+[1m[1m[1m[1m[1m- Resolution failure for literal arguments:
+[1mFailed in nopython mode pipeline (step: nopython frontend)
+[1m[1m[1mInvalid use of getiter with parameters (int64)
+[0m
+[0m[1mDuring: typing of intrinsic-call at c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\MatrixIndividual.py (39)[0m
+[1m
+File "..\..\Modules\MatrixIndividual.py", line 39:[0m
+[1m    def replaceTau(self,alt_tau):
+[1m        for i in len(self.tauVet):
+[0m        [1m^[0m[0m
+
+[0m[1mDuring: Pass nopython_type_inference[0m[0m
+[0m[1m- Resolution failure for non-literal arguments:
+[1mNone[0m
+[0m[0m
+[0m[1mDuring: resolving callee type: BoundFunction((<class 'numba.core.types.misc.ClassInstanceType'>, 'replaceTau') for instance.jitclass.MatrixIndividual#2b208d50830<idxM:array(int16, 2d, A),coeff:array(float64, 1d, A),tauVet:array(float64, 1d, A),nIdx:int8>)[0m
+[0m[1mDuring: typing of call at <string> (3)[0m
+[1m
+File "<string>", line 3:[0m
+[1m<source missing, REPL/exec in use?>[0m
+
+[0m[1mDuring: Pass nopython_type_inference[0m
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<5 lines>...
+        verbose=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 54, in run
+    if best_ind:
+       ^^^^^^^^
+UnboundLocalError: cannot access local variable 'best_ind' where it is not associated with a value
+
+2026-08-28 19:53:33,770 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260828_195333\results.csv
+2026-08-28 19:53:33,771 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260828_195333\results.csv
+2026-08-28 19:53:33,771 | INFO | Execution finished in 0.01 seconds.
