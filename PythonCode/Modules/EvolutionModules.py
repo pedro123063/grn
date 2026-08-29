@@ -306,12 +306,11 @@ def calculate_fitness(model, test=False, solver='RK45', error='SQUARED'):
         y = solve_ivp(model,test=test, solver=solver)
         fitness = Helper.calculate_error(data, y, error)
         fitness = min(fitness, 1e6)
-        return fitness
     except Exception as e:
         # Trata exceções relacionadas ao solver
         print(f"Error msg on EvolutionModules/Individual/calculate_fitness:{e}")
         fitness = 1e6
-        return fitness
+    return fitness
     
 
 #staging end

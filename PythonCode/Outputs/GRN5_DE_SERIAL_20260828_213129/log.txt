@@ -1,0 +1,122 @@
+2026-08-28 21:31:29,918 | INFO | Starting execution - Serial
+2026-08-28 21:31:29,918 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-08-28 21:31:29,918 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-08-28 21:31:30,124 | ERROR | Unexpected error: The map-like callable must be of the form f(func, iterable), returning a sequence of numbers the same length as 'iterable'
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1395, in _calculate_population_energies
+    calc_energies = list(
+        self._mapwrapper(self.func, parameters_pop[0:S])
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 588, in __call__
+    return self.f(x, *self.args)
+           ~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 130, in objective_function
+    fitness=calculate_fitness(copy.deepcopy(self.model),solver=solver,error=error)
+                              ~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 157, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 240, in _reconstruct
+    state = deepcopy(state, memo)
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 131, in deepcopy
+    y = copier(x, memo)
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 202, in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+                             ~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 146, in deepcopy
+    rv = reductor(4)
+TypeError: cannot pickle 'MatrixIndividual' object
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 143, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<11 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1402, in _calculate_population_energies
+    raise RuntimeError(
+    ...<2 lines>...
+    ) from e
+RuntimeError: The map-like callable must be of the form f(func, iterable), returning a sequence of numbers the same length as 'iterable'
+2026-08-28 21:31:30,127 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: cannot access local variable 'best_ind' where it is not associated with a value, traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1395, in _calculate_population_energies
+    calc_energies = list(
+        self._mapwrapper(self.func, parameters_pop[0:S])
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 588, in __call__
+    return self.f(x, *self.args)
+           ~~~~~~^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 130, in objective_function
+    fitness=calculate_fitness(copy.deepcopy(self.model),solver=solver,error=error)
+                              ~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 157, in deepcopy
+    y = _reconstruct(x, memo, *rv)
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 240, in _reconstruct
+    state = deepcopy(state, memo)
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 131, in deepcopy
+    y = copier(x, memo)
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 202, in _deepcopy_dict
+    y[deepcopy(key, memo)] = deepcopy(value, memo)
+                             ~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\Pedro\AppData\Local\Python\pythoncore-3.14-64\Lib\copy.py", line 146, in deepcopy
+    rv = reductor(4)
+TypeError: cannot pickle 'MatrixIndividual' object
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 47, in run
+    raise e
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 143, in execute
+    result = differential_evolution(
+        objective_function,
+    ...<11 lines>...
+    
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\_lib\_util.py", line 365, in wrapper
+    return fun(*args, **kwargs)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 533, in differential_evolution
+    ret = solver.solve()
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1219, in solve
+    self._calculate_population_energies(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.population[self.feasible]))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\.env\Lib\site-packages\scipy\optimize\_differentialevolution.py", line 1402, in _calculate_population_energies
+    raise RuntimeError(
+    ...<2 lines>...
+    ) from e
+RuntimeError: The map-like callable must be of the form f(func, iterable), returning a sequence of numbers the same length as 'iterable'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<5 lines>...
+        verbose=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 54, in run
+    if best_ind:
+       ^^^^^^^^
+UnboundLocalError: cannot access local variable 'best_ind' where it is not associated with a value
+
+2026-08-28 21:31:30,130 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260828_213129\results.csv
+2026-08-28 21:31:30,131 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260828_213129\results.csv
+2026-08-28 21:31:30,131 | INFO | Execution finished in 0.21 seconds.

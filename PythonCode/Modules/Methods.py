@@ -119,12 +119,16 @@ class DE(Method):
             # ind.calculate_fitness(solver=solver,error=error)
             # return ind.fitness
             tau_slice= np.ascontiguousarray(params[:self.model.numLabels])
-            print(f"tau_slice:{tau_slice}")
+            #print(f"tau_slice:{tau_slice}")
+
             coeff_slice=np.ascontiguousarray(params[self.model.numLabels:])
-            print(f"coeff_slice{coeff_slice}")
+            #print(f"coeff_slice{coeff_slice}")
+
             self.model.MatrixInd.replaceTau(tau_slice)
             self.model.MatrixInd.replaceCoeffVet(coeff_slice)
+
             fitness=calculate_fitness(self.model,solver=solver,error=error)
+
             '''
             for i in range(S):
                 ind = Individual.list_to_ind(params[:,i], self.model)
@@ -132,7 +136,8 @@ class DE(Method):
                 fitness[i]=ind.fitness
             return fitness
             '''
-            print(f'fitness:{fitness}')
+            #print(f'fitness:{fitness}')
+            #print(f"bounds_matrix:{self.model.bounds_matrix}")
             return fitness
     
         result = differential_evolution(
