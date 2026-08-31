@@ -1,0 +1,38 @@
+2026-08-31 00:31:15,498 | INFO | Starting execution - Serial
+2026-08-31 00:31:15,498 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-08-31 00:31:15,498 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-08-31 00:31:37,649 | ERROR | Unexpected error: 'MatrixIndividual' object has no attribute 'replaceCoeffs'
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 181, in execute
+    self.model.MatrixInd.replaceCoeffs(result.x[self.model.numLabels:])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MatrixIndividual' object has no attribute 'replaceCoeffs'. Did you mean: 'replaceCoeffVet'?
+2026-08-31 00:31:37,651 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: cannot access local variable 'best_ind' where it is not associated with a value, traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 47, in run
+    raise e
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 43, in run
+    best_ind = self.execute(logging=logging, solver=solver, seed=seed, error=error, gens=gens, verbose=verbose)
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 181, in execute
+    self.model.MatrixInd.replaceCoeffs(result.x[self.model.numLabels:])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MatrixIndividual' object has no attribute 'replaceCoeffs'. Did you mean: 'replaceCoeffVet'?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<5 lines>...
+        verbose=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 54, in run
+    if best_ind:
+       ^^^^^^^^
+UnboundLocalError: cannot access local variable 'best_ind' where it is not associated with a value
+
+2026-08-31 00:31:37,653 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260831_003115\results.csv
+2026-08-31 00:31:37,654 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260831_003115\results.csv
+2026-08-31 00:31:37,654 | INFO | Execution finished in 22.16 seconds.

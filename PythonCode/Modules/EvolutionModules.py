@@ -303,9 +303,13 @@ def calculate_fitness(model, test=False, solver='RK45', error='SQUARED'):
     else:
         data = model.original_train
     try:
+        
         y = solve_ivp(model,test=test, solver=solver)
+        #print(y)
         fitness = Helper.calculate_error(data, y, error)
         fitness = min(fitness, 1e6)
+        if np.isnan(fitness):
+            fitness=1e6
     except Exception as e:
         # Trata exceções relacionadas ao solver
         print(f"Error msg on EvolutionModules/Individual/calculate_fitness:{e}")

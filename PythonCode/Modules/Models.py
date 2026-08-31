@@ -124,7 +124,36 @@ class Model:
                 lines.append(self.summarize_coeffs(value, indent, level + 1))
         return '\n'.join(lines)
 
+    def reconstruct(self): # chamar antes do decoding
+        for key1,value1 in self.coeffs.items():
+            vAux_m1=self.encodingDict[key1]
+            
+            for key2 in list(value1.keys()):
+                vAux_m2=self.encodingDict[key2]
+                if key2!=self.encodingDict['tau']:
+                    self.coeffs[key1][key2]=dict()
+                    vAux0=self.encodingDict['n']
+                    vAux1=self.encodingDict['k']
+                    vAux2=self.encodingDict['-']
+                    self.coeffs[key1][key2]['n']=self.MatrixInd[vAux_m1,vAux_m2,vAux0]
+                    self.coeffs[key1][key2]['k']=self.MatrixInd[vAux_m1,vAux_m2,vAux1]
+                    self.coeffs[key1][key2]['-']=False if self.MatrixInd[vAux_m1,vAux_m2,vAux2]<1.0 else True
+                else:
+                    self.coeffs[key1][key2]=self.MatrixInd.tau(vAux_m1)
 
+
+
+    # def decode(self):
+    #     self.coeffs=self.aux_decode(self.coeffs)
+    # def aux_decode(self,current):
+    #     aux=dict()
+    #     for key1,value1 in current.items():
+    #         if isinstance(value1,dict):
+    #             aux[self.encodingDict[key1]]=self.aux_decode(value1)
+    #         else:
+    #             aux[self.encodingDict[key1]]=value1
+    #     return aux
+    
     def bounds_matrix_create(self): # gera a matriz que será lida pelo differential_evolution.Estruturada de maneira a reduzir overhead na hora de enviar valores do diff_ev p montagem de individuo
         l_aux=[]
         for i in range(len(self.labels)):

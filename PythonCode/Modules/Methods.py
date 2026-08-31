@@ -112,20 +112,43 @@ class DE(Method):
         self.polish = polish 
         self.disp = disp 
 
+    def format_to_expected(self):
+        #tauA,coeffsAb,coeffsAC,...,TauB,coeffsBA,Coeffsbc,...,TauC,...,_
+        coeffs=self.model.coeffs
+        result = []
+        for key1,value1 in coeffs.items():
+            result.append(coeffs[key1]['tau'])
+            for key2,_ in value1.items():
+                if key2 != 'tau':
+                    result.append(coeffs[key1][key2]['n'])
+                    result.append(coeffs[key1][key2]['k'])
+                                    
+        return np.array(result)
+
     def execute(self, logging, solver, error, seed, gens=5000, verbose=False):
-        
+        '''
+        def bounds_list(self):
+                bounds_list = []
+                for key, label in self.coeffs.items():
+                    bounds_list.append(self.bounds['tau'])
+                    for key, coeffs in label.items():
+                        if key != 'tau':
+                            bounds_list.append(self.bounds['n'])
+                            bounds_list.append(self.bounds['k'])
+                            
+                return bounds_list
+            
+        '''
+
         def objective_function(params):
-            # ind = Individual.list_to_ind(params, self.model)
-            # ind.calculate_fitness(solver=solver,error=error)
-            # return ind.fitness
-            tau_slice= np.ascontiguousarray(params[:self.model.numLabels])
-            #print(f"tau_slice:{tau_slice}")
+            #print(f'params: {params} \n\n')
+           
+            #tau_slice= np.ascontiguousarray(params[:self.model.numLabels])
 
-            coeff_slice=np.ascontiguousarray(params[self.model.numLabels:])
-            #print(f"coeff_slice{coeff_slice}")
+            #coeff_slice=np.ascontiguousarray(params[self.model.numLabels:])
 
-            self.model.MatrixInd.replaceTau(tau_slice)
-            self.model.MatrixInd.replaceCoeffVet(coeff_slice)
+            self.model.MatrixInd.replaceTau(params[:self.model.numLabels])
+            self.model.MatrixInd.replaceCoeffVet(params[self.model.numLabels:])
 
             fitness=calculate_fitness(self.model,solver=solver,error=error)
 
@@ -136,10 +159,9 @@ class DE(Method):
                 fitness[i]=ind.fitness
             return fitness
             '''
-            #print(f'fitness:{fitness}')
-            #print(f"bounds_matrix:{self.model.bounds_matrix}")
+            
             return fitness
-    
+
         result = differential_evolution(
             objective_function,
             self.model.bounds_matrix,
@@ -149,14 +171,17 @@ class DE(Method):
             mutation=0.8,
             recombination=0.75,
             seed=seed,
-            polish=True,
-            disp=True
+            polish=True
+            ,disp=True
             #,vectorized=True
             #,workers=-1
 
         )
-        
-        return Individual.list_to_ind(result.x, self.model)
+        self.model.MatrixInd.replaceTau(result.x[:self.model.numLabels])
+        self.model.MatrixInd.replaceCoeffVet(result.x[self.model.numLabels:])
+        self.model.reconstruct()
+        aux=self.format_to_expected()
+        return Individual.list_to_ind(aux, self.model)
 
 class DE_vectorized(Method):
     def __init__(

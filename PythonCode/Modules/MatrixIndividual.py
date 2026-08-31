@@ -24,7 +24,12 @@ class MatrixIndividual:
         self.nIdx=nIdx
         
         return None
-
+    def getPos(self,key):
+        origIdx=key[0]
+        targetIdx=key[1]
+        varIdx=key[2]
+        return self.idxM[origIdx,targetIdx]+(varIdx-self.nIdx)
+    
     def __getitem__(self,key):
 
         origIdx=key[0]
