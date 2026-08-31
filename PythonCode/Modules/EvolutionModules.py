@@ -53,7 +53,7 @@ class Individual:
             initial_conditions = self.model.test_initial_conditions
             t_eval = self.model.t_test
             t_span = self.model.test_t_span
-            print('teste: ', self.model.t_test, self.model.t_eval)
+            #print('teste: ', self.model.t_test, self.model.t_eval)#originalmente nao estava comentado
         else:   
             initial_conditions = self.model.initial_conditions
             t_eval = self.model.t_eval
@@ -265,7 +265,7 @@ def solve_ivp(model, test=False, solver='RK45'):
         initial_conditions = model.test_initial_conditions
         t_eval = model.t_test
         t_span = model.test_t_span
-        print('teste: ', model.t_test, model.t_eval)
+        #print('teste: ', model.t_test, model.t_eval)# originnalmente nao estava comentado
     else:   
         initial_conditions = model.initial_conditions
         t_eval = model.t_eval
@@ -305,7 +305,6 @@ def calculate_fitness(model, test=False, solver='RK45', error='SQUARED'):
     try:
         
         y = solve_ivp(model,test=test, solver=solver)
-        #print(y)
         fitness = Helper.calculate_error(data, y, error)
         fitness = min(fitness, 1e6)
         if np.isnan(fitness):

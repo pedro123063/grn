@@ -130,7 +130,7 @@ class Model:
             
             for key2 in list(value1.keys()):
                 vAux_m2=self.encodingDict[key2]
-                if key2!=self.encodingDict['tau']:
+                if key2!='tau':
                     self.coeffs[key1][key2]=dict()
                     vAux0=self.encodingDict['n']
                     vAux1=self.encodingDict['k']
@@ -140,8 +140,6 @@ class Model:
                     self.coeffs[key1][key2]['-']=False if self.MatrixInd[vAux_m1,vAux_m2,vAux2]<1.0 else True
                 else:
                     self.coeffs[key1][key2]=self.MatrixInd.tau(vAux_m1)
-
-
 
     # def decode(self):
     #     self.coeffs=self.aux_decode(self.coeffs)

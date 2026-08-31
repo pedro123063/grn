@@ -57,7 +57,7 @@ class Method:
                     best_ind = Individual.list_to_ind(best_ind, model=self.model)
                 
                 if self.model.train_percentage < 1.0:
-                    print("calculando fitness baseado no teste")
+                    #print("calculando fitness baseado no teste")
                     errors_result = best_ind.calc_all_fitness(test=True, solver=solver)
                 else:
                     errors_result = best_ind.calc_all_fitness(test=False, solver=solver)
@@ -115,6 +115,7 @@ class DE(Method):
     def format_to_expected(self):
         #tauA,coeffsAb,coeffsAC,...,TauB,coeffsBA,Coeffsbc,...,TauC,...,_
         coeffs=self.model.coeffs
+
         result = []
         for key1,value1 in coeffs.items():
             result.append(coeffs[key1]['tau'])
@@ -126,22 +127,8 @@ class DE(Method):
         return np.array(result)
 
     def execute(self, logging, solver, error, seed, gens=5000, verbose=False):
-        '''
-        def bounds_list(self):
-                bounds_list = []
-                for key, label in self.coeffs.items():
-                    bounds_list.append(self.bounds['tau'])
-                    for key, coeffs in label.items():
-                        if key != 'tau':
-                            bounds_list.append(self.bounds['n'])
-                            bounds_list.append(self.bounds['k'])
-                            
-                return bounds_list
-            
-        '''
 
         def objective_function(params):
-            #print(f'params: {params} \n\n')
            
             #tau_slice= np.ascontiguousarray(params[:self.model.numLabels])
 
@@ -151,14 +138,6 @@ class DE(Method):
             self.model.MatrixInd.replaceCoeffVet(params[self.model.numLabels:])
 
             fitness=calculate_fitness(self.model,solver=solver,error=error)
-
-            '''
-            for i in range(S):
-                ind = Individual.list_to_ind(params[:,i], self.model)
-                ind.calculate_fitness(solver=solver,error=error)
-                fitness[i]=ind.fitness
-            return fitness
-            '''
             
             return fitness
 
@@ -172,15 +151,17 @@ class DE(Method):
             recombination=0.75,
             seed=seed,
             polish=True
-            ,disp=True
+            ,disp=False
             #,vectorized=True
             #,workers=-1
 
         )
         self.model.MatrixInd.replaceTau(result.x[:self.model.numLabels])
         self.model.MatrixInd.replaceCoeffVet(result.x[self.model.numLabels:])
+
         self.model.reconstruct()
         aux=self.format_to_expected()
+        
         return Individual.list_to_ind(aux, self.model)
 
 class DE_vectorized(Method):

@@ -1,0 +1,22 @@
+2026-08-31 01:32:49,143 | INFO | Starting execution - Serial
+2026-08-31 01:32:49,143 | INFO | Running with seed=0, solver=ODEINT, error=MSE
+2026-08-31 01:32:49,143 | INFO | Starting execution for DE: Solver=ODEINT, Error=MSE, Seed=0
+2026-08-31 01:32:52,181 | INFO | Execution finished for solver: ODEINT, seed: 0, error: MSE in 3.04 seconds.
+2026-08-31 01:32:52,357 | ERROR | Error running seed=0, solver=ODEINT, error=MSE: 'Model' object has no attribute 'df', traceback=Traceback (most recent call last):
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Handlers.py", line 97, in run_single
+    result = method.run(
+        logging=self.logger,
+    ...<6 lines>...
+        plot_best_ind=True
+    )
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Methods.py", line 88, in run
+    Plotter.plot_ind(best_ind, filepath=filepath, name=f"{self.model.name}")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Pedro\faculdade\IniciacaoCientifica\grn\PythonCode\Modules\Plotters.py", line 129, in plot_ind
+    model.df,
+    ^^^^^^^^
+AttributeError: 'Model' object has no attribute 'df'
+
+2026-08-31 01:32:52,359 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260831_013249\results.csv
+2026-08-31 01:32:52,360 | INFO | Results saved to ../../Outputs/GRN5_DE_SERIAL_20260831_013249\results.csv
+2026-08-31 01:32:52,360 | INFO | Execution finished in 3.22 seconds.
