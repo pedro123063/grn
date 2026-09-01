@@ -142,8 +142,9 @@ class DE(Method):
             return fitness
 
         result = differential_evolution(
-            objective_function,
-            self.model.bounds_matrix,
+            objective_function
+            ,self.model.bounds_list(),
+            #,self.model.bounds_matrix,
             strategy='best1bin',
             maxiter=gens,
             popsize=15,
@@ -152,6 +153,7 @@ class DE(Method):
             seed=seed,
             polish=True
             ,disp=False
+            ,updating='deferred'
             #,vectorized=True
             #,workers=-1
 
