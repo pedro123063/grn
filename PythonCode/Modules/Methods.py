@@ -127,15 +127,33 @@ class DE(Method):
         return np.array(result)
 
     def execute(self, logging, solver, error, seed, gens=5000, verbose=False):
+        print(f"\n\n\{solver}n\n")
+        def reorder(params,MatrixInd):
+            taus_pos=[]
+            taus_pos.append(MatrixInd.getPos((0,4,MatrixInd.nIdx))-1)
+            taus_pos.append(MatrixInd.getPos((1,0,MatrixInd.nIdx))-1)
+            taus_pos.append(MatrixInd.getPos((2,1,MatrixInd.nIdx))-1)
+            taus_pos.append(MatrixInd.getPos((3,2,MatrixInd.nIdx))-1)
+            taus_pos.append(MatrixInd.getPos((4,0,MatrixInd.nIdx))-1)
+            taus_pos=sorted(taus_pos)
+            taus = sorted([params[i] for i in taus_pos])
+            values=[]
+            values.extend(taus)
+            for i in range(len(params)):
+                if i not in taus_pos:
+                    values.append(params[i])
+            return np.array(values,dtype=np.float64)
 
+        
         def objective_function(params):
            
             #tau_slice= np.ascontiguousarray(params[:self.model.numLabels])
 
             #coeff_slice=np.ascontiguousarray(params[self.model.numLabels:])
-
-            self.model.MatrixInd.replaceTau(params[:self.model.numLabels])
-            self.model.MatrixInd.replaceCoeffVet(params[self.model.numLabels:])
+            print(f"\n\n\{solver}\n\nmaxitter:{gens} \n\n")
+            aux=reorder(params,self.model.MatrixInd)
+            self.model.MatrixInd.replaceTau(aux[:self.model.numLabels])
+            self.model.MatrixInd.replaceCoeffVet(aux[self.model.numLabels:])
 
             fitness=calculate_fitness(self.model,solver=solver,error=error)
             
@@ -153,7 +171,7 @@ class DE(Method):
             seed=seed,
             polish=True
             ,disp=False
-            ,updating='deferred'
+            #,updating='deferred'
             #,vectorized=True
             #,workers=-1
 

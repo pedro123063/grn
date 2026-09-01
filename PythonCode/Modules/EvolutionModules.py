@@ -273,6 +273,7 @@ def solve_ivp(model, test=False, solver='RK45'):
     
     
     if solver.upper() == 'ODEINT':
+        print("!1")
         sol = odeint(
             model.system,
             # lambda y, t: model.system(t, y, self, equation),  # Wrap system for odeint (t first)
@@ -285,6 +286,7 @@ def solve_ivp(model, test=False, solver='RK45'):
         
         return sol.T
     else:
+        print("!2")
         return integrate.solve_ivp(
             model.system,
             t_span,
