@@ -155,7 +155,7 @@ class ExecutionHandler:
         
         
         data = pd.read_csv(f"{self.run_path}/results.csv")
-        Plotter.plot_comparative_boxplots(data, filepath=self.run_path, filetype='png', name='boxplot_comparison')
+        #Plotter.plot_comparative_boxplots(data, filepath=self.run_path, filetype='png', name='boxplot_comparison')
     
     
     

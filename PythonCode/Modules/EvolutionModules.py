@@ -10,7 +10,7 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 from Modules.Plotters import Plotter
 from Modules.Helpers import Helper
-from Modules.Equations import Equation
+from Modules.Equations import *
 
 # Representa um coeficiente com valor e limites
 class Coefficient:
@@ -42,6 +42,7 @@ class Individual:
         self.model = model
         self.fitness = np.inf # Fitness inicializado como infinito
         self.coeffs = copy.deepcopy(self.model.coeffs)
+
         
         
     # def solve_ivp(self, solver='RK45'):
@@ -52,7 +53,7 @@ class Individual:
             initial_conditions = self.model.test_initial_conditions
             t_eval = self.model.t_test
             t_span = self.model.test_t_span
-            print('teste: ', self.model.t_test, self.model.t_eval)
+            #print('teste: ', self.model.t_test, self.model.t_eval)#originalmente nao estava comentado
         else:   
             initial_conditions = self.model.initial_conditions
             t_eval = self.model.t_eval
@@ -65,7 +66,7 @@ class Individual:
                 # lambda y, t: self.model.system(t, y, self, self.equation),  # Wrap system for odeint (t first)
                 initial_conditions,
                 t_eval,
-                args=(self, self.equation),
+                args=(self.model.max_data,self.model.MatrixInd,self.model.encodedLabels),
                 tfirst=True,  # Important: tells odeint the function is (t, y) instead of (y, t)
                 hmin=0.001
             )
@@ -78,8 +79,9 @@ class Individual:
                 initial_conditions,
                 method=solver,
                 t_eval=t_eval,
-                args=(self, self.equation)#,
+                args=(self.model.max_data,self.model.MatrixInd,self.model.encodedLabels)#,
                 #min_step=0.001
+                
             ).y
     
     def ind_to_list(self):
@@ -112,9 +114,9 @@ class Individual:
             y = self.solve_ivp(test=test, solver=solver)
             self.fitness = Helper.calculate_error(data, y, error)
             self.fitness = min(self.fitness, 1e6)
-        except:
+        except Exception as e:
             # Trata exceções relacionadas ao solver
-            print("Overflow")
+            print(f"Error msg on EvolutionModules/Individual/calculate_fitness:{e}")
             self.fitness = 1e6
             
     def calc_all_fitness(self, test=False, solver='RK45'):
@@ -157,8 +159,8 @@ class Individual:
                     coeffs['k'] = Coefficient(self.model.bounds['k'])
 
         self.calculate_fitness(solver=solver, error=error)
-            
-     
+
+
     @property
     def equation(self):
         return Equation(self.numerical_coeffs, self.model.labels)
@@ -254,3 +256,64 @@ class Individual:
     def __repr__(self):
         coeffs_repr = {k: v for k, v in self.coeffs.items()}
         return f"Individual(fitness={self.fitness}, coeffs={coeffs_repr}, ind_size={self.model.IND_SIZE})"
+
+
+#staging start
+
+def solve_ivp(model, test=False, solver='RK45'):
+    if test:
+        initial_conditions = model.test_initial_conditions
+        t_eval = model.t_test
+        t_span = model.test_t_span
+        #print('teste: ', model.t_test, model.t_eval)# originnalmente nao estava comentado
+    else:   
+        initial_conditions = model.initial_conditions
+        t_eval = model.t_eval
+        t_span = model.t_span
+    
+    
+    if solver.upper() == 'ODEINT':
+        sol = odeint(
+            model.system,
+            # lambda y, t: model.system(t, y, self, equation),  # Wrap system for odeint (t first)
+            initial_conditions,
+            t_eval,
+            args=(model.max_data,model.MatrixInd,model.encodedLabels),
+            tfirst=True,  # Important: tells odeint the function is (t, y) instead of (y, t)
+            hmin=0.001
+        )
+        
+        return sol.T
+    else:
+        return integrate.solve_ivp(
+            model.system,
+            t_span,
+            initial_conditions,
+            method=solver,
+            t_eval=t_eval,
+            args=(model.max_data,model.MatrixInd,model.encodedLabels)#,
+            #min_step=0.001
+            
+        ).y
+
+
+def calculate_fitness(model, test=False, solver='RK45', error='SQUARED'):
+    if test:
+        data = model.original_test
+    else:
+        data = model.original_train
+    try:
+        
+        y = solve_ivp(model,test=test, solver=solver)
+        fitness = Helper.calculate_error(data, y, error)
+        fitness = min(fitness, 1e6)
+        if np.isnan(fitness):
+            fitness=1e6
+    except Exception as e:
+        # Trata exceções relacionadas ao solver
+        print(f"Error msg on EvolutionModules/Individual/calculate_fitness:{e}")
+        fitness = 1e6
+    return fitness
+    
+
+#staging end

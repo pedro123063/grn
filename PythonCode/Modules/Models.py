@@ -7,16 +7,25 @@ from scipy.integrate import solve_ivp
 import math
 import time
 import pandas as pd
+import Modules.Equations as Eq
+import Modules.Encode as Enc
+import Modules.MatrixIndividual as ma
+import Modules.Solvers as sol
 
 # Importação de módulos personalizados
 from Modules.Helpers import Helper
-from Modules.Solvers import Solvers
-from Modules.Equations import Equation
 
+
+from Modules.Encode import *
 from Modules.TrainTest import TemporalTrainTest
+from numba import njit
 
 class Model:
-    def __init__(self, coeffs, bounds, system, labels, datapath, name, train_percentage, excluded_coeffs={}):
+    def __init__(self, coeffs, bounds, system, labels, datapath,\
+                  name, train_percentage,encodedLabels,encodingdict,encodedBounds,idxMatrix,coeffVet,tauVet,\
+                  excluded_coeffs={},
+                    \
+                ):
         self.coeffs = coeffs
         self.excluded_coeffs = excluded_coeffs
         self.bounds = bounds
@@ -27,7 +36,17 @@ class Model:
         self.name = name
         self.train_percentage = train_percentage
         self.resolve_data(train_percentage)
-        
+        self.encodingDict=encodingdict
+        self.encodedBounds=encodedBounds
+        self.idxMatrix=idxMatrix
+        self.coeffVet=coeffVet
+        self.tauVet=tauVet
+        self.encodedLabels=encodedLabels
+        self.nIdx=len(encodedLabels)#escrever no readme que isso foi convencionado
+        self.MatrixInd=ma.MatrixIndividual(self.idxMatrix,self.coeffVet,self.tauVet,self.nIdx)
+        self.numLabels=len(labels)
+        self.coefNum_div3=len(coeffVet)//3
+        self.bounds_matrix=self.bounds_matrix_create()
     # def resolve_data(self):
     #     self.df, self.max_data = Helper.load_data(filename=self.datapath, labels=self.labels)
     #     self.initial_conditions = np.array([self.df[label].iloc[0] for label in self.labels])
@@ -57,10 +76,9 @@ class Model:
         self.original_train = y[:, :self.n_train]
 
         # max_data calculado a partir dos dados de treino
-        self.max_data = {
-            label: np.max(self.original_train[i, :])
-            for i, label in enumerate(self.labels)
-        }
+        self.max_data =np.array(\
+            [np.max(self.original_train[i, :])for i, label in enumerate(self.labels)]
+        ,dtype=np.double)
 
         # Configuração padrão do modelo (treino)
         self.t_eval = self.t_train
@@ -105,8 +123,48 @@ class Model:
             if isinstance(value, dict):
                 lines.append(self.summarize_coeffs(value, indent, level + 1))
         return '\n'.join(lines)
+
+    def reconstruct(self): # chamar antes do decoding
+        for key1,value1 in self.coeffs.items():
+            vAux_m1=self.encodingDict[key1]
+            
+            for key2 in list(value1.keys()):
+                vAux_m2=self.encodingDict[key2]
+                if key2!='tau':
+                    self.coeffs[key1][key2]=dict()
+                    vAux0=self.encodingDict['n']
+                    vAux1=self.encodingDict['k']
+                    vAux2=self.encodingDict['-']
+                    self.coeffs[key1][key2]['n']=self.MatrixInd[vAux_m1,vAux_m2,vAux0]
+                    self.coeffs[key1][key2]['k']=self.MatrixInd[vAux_m1,vAux_m2,vAux1]
+                    self.coeffs[key1][key2]['-']=False if self.MatrixInd[vAux_m1,vAux_m2,vAux2]<1.0 else True
+                else:
+                    self.coeffs[key1][key2]=self.MatrixInd.tau(vAux_m1)
+
+    # def decode(self):
+    #     self.coeffs=self.aux_decode(self.coeffs)
+    # def aux_decode(self,current):
+    #     aux=dict()
+    #     for key1,value1 in current.items():
+    #         if isinstance(value1,dict):
+    #             aux[self.encodingDict[key1]]=self.aux_decode(value1)
+    #         else:
+    #             aux[self.encodingDict[key1]]=value1
+    #     return aux
     
-        
+    def bounds_matrix_create(self): # gera a matriz que será lida pelo differential_evolution.Estruturada de maneira a reduzir overhead na hora de enviar valores do diff_ev p montagem de individuo
+        l_aux=[]
+        for i in range(len(self.labels)):
+            l_aux.append(self.encodedBounds[self.encodingDict['tau']])
+        for i in range(self.coefNum_div3):
+            l_aux.append(self.encodedBounds[self.encodingDict['n']])
+            l_aux.append(self.encodedBounds[self.encodingDict['k']])
+        bounds_matrix=np.array(l_aux,dtype=np.float64)
+        '''
+        As primeiras len(labels) posicoes conterão bounds de tau. As outras , conterão bounds de n,k alternados. Deve ser tratado com slicing na obj_func
+        '''
+        return bounds_matrix
+          
     def bounds_list(self):
         bounds_list = []
         for key, label in self.coeffs.items():
@@ -134,30 +192,50 @@ class Model:
 class ModelWrapper:
             #simply wraps the model based on our desire of use GRN(5 or 10), ABCD or ECOLI , fowarding the infos the  the right places. Read Model for more deatil.
             #Returns a Model
+    @staticmethod
+    @njit 
+
+    def GRN5_system(t, y,maxData,matrixInd,encodedLabels):
+        #DIFFERENTIAL EQUATIONS SYSTEM ?
+        
+        vals = np.empty_like(y)
+        for i in range(len(y)): #list of y's after being normalized by the maxValue of their respective label 
+            vals[i]=sol.norm_hardcoded(y[i], maxData[i])
+        #(if y[0] is a value for a label[0]==A , it will be normalized by max_val of all values associated with A)
+        #before the for : normalizes each value using the maximum value of their correspondent label
+        #zip : creates tuples (y[index],labels[index])
+        
+        dA = Eq.full_eq(vals, encodedLabels[0], encodedLabels[4],matrixInd) # calculates the value of dA using vals(matrix) , 'A' and 'E'
+        dB = Eq.full_eq(vals, encodedLabels[1], encodedLabels[0],matrixInd)
+        dC = Eq.full_eq(vals, encodedLabels[2], encodedLabels[1],matrixInd)
+        dD = Eq.full_eq(vals, encodedLabels[3], encodedLabels[2],matrixInd)
+        pairs=np.array([ [ encodedLabels[1] , encodedLabels[3] ] , [ encodedLabels[3], encodedLabels[4] ] ],dtype=np.int8)
+        dE = Eq.complex_eqs(vals, 4, pairs,matrixInd)
     
+        return np.array([dA, dB, dC, dD, dE],dtype=np.double)
     @staticmethod
     def GRN5(train_percentage, excluded_coeffs={}): #returns a model for the GRN5
         labels = ['A', 'B', 'C', 'D', 'E']
         datapath = '../../Data/GRN5_DATA.txt'
         
-        coeffs = { #dict of dicts of dicts (3 dicts nested)
-            'A': {
+        coeffs = {  #base
+            'A': {  #target 
                 'E': {'n': None, 'k': None, '-': True},
                 'tau': None
             },
-            'B': {
+            'B': {  #target
                 'A': {'n': None, 'k': None, '-': False},
                 'tau': None
             },
-            'C': {
+            'C': {  #target
                 'B': {'n': None, 'k': None, '-': False},
                 'tau': None,
             },
-            'D': {
+            'D': {  #target
                 'C': {'n': None, 'k': None, '-': False},
                 'tau': None,
             },
-            'E': {
+            'E': {  #target
                 'D': {'n': None, 'k': None, '-': False},
                 'B': {'n': None, 'k': None, '-': False},
                 'E': {'n': None, 'k': None, '-': False},
@@ -165,31 +243,21 @@ class ModelWrapper:
             }
         }
         
+        
         bounds = {
             'tau': (0.1, 5.0),
             'k': (0.1, 2.0),
             'n': (0.1, 30.0)
         }
-        
+
+        encodedLabels,encodingdict,encodedBounds,idxMatrix,coeffVet,tauVet=Enc.encode(labels,coeffs,bounds)
         # ind.model.max_data vira um argumento max_data
         # equação é argumento para aumentar eficiencia da função    
-        def system(t, y, ind, equation):
-            #DIFFERENTIAL EQUATIONS SYSTEM ?
-            
-            vals = [Solvers.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)] #list of y's after being normalized by the maxValue of their respective label 
-                                                                                                             #(if y[0] is a value for a label[0]==A , it will be normalized by max_val of all values associated with A)
-            #before the for : normalizes each value using the maximum value of their correspondent label
-            #zip : creates tuples (y[index],labels[index])
-            
-            dA = equation.full_eq(vals, 'A', 'E') # differential of A ? differential equation of A ?
-            dB = equation.full_eq(vals, 'B', 'A')
-            dC = equation.full_eq(vals, 'C', 'B')
-            dD = equation.full_eq(vals, 'D', 'C')
-            dE = equation.complex_eqs(vals, 'E', [['+B', '+D'], ['+D', '+E']])
 
-            return [dA, dB, dC, dD, dE]
             
-        return Model(coeffs=coeffs, bounds=bounds, system=system, labels=labels, datapath=datapath, name='GRN5', train_percentage=train_percentage, excluded_coeffs=excluded_coeffs)
+        return Model(coeffs=coeffs, bounds=bounds, system=ModelWrapper.GRN5_system, labels=labels, datapath=datapath, name='GRN5', train_percentage=train_percentage,\
+                     encodedLabels=encodedLabels,encodingdict=encodingdict,\
+                    encodedBounds=encodedBounds,idxMatrix=idxMatrix,coeffVet=coeffVet,tauVet=tauVet,excluded_coeffs=excluded_coeffs)
     
     
     @staticmethod
@@ -253,7 +321,7 @@ class ModelWrapper:
 
         # equação é argumento para aumentar eficiencia da função    
         def system(t, y, ind, equation):
-            vals = [Solvers.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
+            vals = [sol.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
             
             dA = equation.full_eq(vals, 'A', 'J')
             dB = equation.full_eq(vals, 'B', 'E')
@@ -322,7 +390,7 @@ class ModelWrapper:
 
         # equação é argumento para aumentar eficiencia da função    
         def system(t, y, ind, equation):
-            vals = [Solvers.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
+            vals = [sol.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
             
             dA = equation.complex_eqs(vals, 'A', [['-A', '-D'], ['+B', '-D'], ['+A', '-B', '+D']])
             dB = equation.complex_eqs(vals, 'B', [['-C'], ['+D']])
@@ -379,7 +447,7 @@ class ModelWrapper:
 
         # equação é argumento para aumentar eficiencia da função    
         def system(t, y, ind, equation):
-            vals = [Solvers.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
+            vals = [sol.norm_hardcoded(val, ind.model.max_data[label]) for val, label in zip(y, labels)]
             
             dA = equation.complex_eqs(vals, 'A', [['-A', '-D', '-E'], ['-A', '-C', '+E'], ['+A', '+D', '-E']])
             dB = equation.complex_eqs(vals, 'B', [['-A', '-D', '-E'], ['-A', '-C', '+E'], ['+A', '+D', '-E']])
@@ -390,3 +458,4 @@ class ModelWrapper:
             return [dA, dB, dC, dD, dE]
 
         return Model(coeffs=coeffs, bounds=bounds, system=system, labels=labels, datapath=datapath, name='ECOLI', train_percentage=train_percentage)
+
